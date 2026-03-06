@@ -71,7 +71,7 @@ cd StellarHaven
 2. **用 Unity Hub 打开项目**
    - 点击 "Add" 按钮
    - 选择项目文件夹
-   - 选择 Unity 2022.3.15f1
+   - 选择 Unity 2022.3.62f3c1
 
 3. **初始化场景（首次）**
    - 在 Unity 顶部菜单执行 `StellarHaven/Setup/Create Bootstrap & Main Scenes`

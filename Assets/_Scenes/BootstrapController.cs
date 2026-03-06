@@ -55,13 +55,22 @@ namespace StellarHaven.Scenes
         {
             Debug.Log("📦 预加载必要资源...");
             
-            // 预加载 UI 资源
-            ResourceManager.Instance.LoadResource<GameObject>("UI/MainCanvas");
-            
-            // 预加载音频资源
-            ResourceManager.Instance.LoadResource<AudioClip>("Audio/BGM/MainTheme");
+            TryPreloadResource<GameObject>("UI/MainCanvas");
+            TryPreloadResource<AudioClip>("Audio/BGM/MainTheme");
             
             Debug.Log("✅ 预加载完成");
+        }
+
+        private void TryPreloadResource<T>(string path) where T : Object
+        {
+            T exists = Resources.Load<T>(path);
+            if (exists == null)
+            {
+                Debug.LogWarning($"资源不存在，跳过预加载：{path}");
+                return;
+            }
+
+            ResourceManager.Instance.LoadResource<T>(path);
         }
         
         /// <summary>

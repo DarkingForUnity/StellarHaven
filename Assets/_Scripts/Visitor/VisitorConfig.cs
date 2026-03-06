@@ -69,6 +69,9 @@ namespace StellarHaven.Visitor
         /// </summary>
         public bool IsPreferredService(ServiceType service)
         {
+            if (preferredServices == null || preferredServices.Length == 0)
+                return false;
+
             foreach (ServiceType preferred in preferredServices)
             {
                 if (preferred == service)

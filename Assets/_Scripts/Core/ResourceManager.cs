@@ -102,12 +102,12 @@ namespace StellarHaven.Core
             }
             
             // 从 Resources 加载
-            T resource = Resources.Load<T>(path);
+            T loadedResource = Resources.Load<T>(path);
             
-            if (resource != null)
+            if (loadedResource != null)
             {
                 // 添加到缓存
-                _resourceCache[path] = resource;
+                _resourceCache[path] = loadedResource;
                 Debug.Log($"📥 新加载：{path}");
             }
             else
@@ -115,7 +115,7 @@ namespace StellarHaven.Core
                 Debug.LogError($"❌ 资源加载失败：{path}");
             }
             
-            return resource;
+            return loadedResource;
         }
         
         /// <summary>
