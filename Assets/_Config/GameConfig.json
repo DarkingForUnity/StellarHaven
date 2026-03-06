@@ -1,0 +1,111 @@
+{
+  "gameConfig": {
+    "gameTitle": "星际港湾",
+    "version": "0.1.0",
+    "debugMode": true,
+    "targetFPS": 60,
+    "defaultLanguage": "zh-CN"
+  },
+  "visitorConfig": [
+    {
+      "id": 1,
+      "name": "商旅",
+      "type": "Merchant",
+      "budget": 1000,
+      "patience": 30,
+      "preferredServices": ["fuel", "shop"],
+      "description": "星际商人，追求效率，消费能力强"
+    },
+    {
+      "id": 2,
+      "name": "探险家",
+      "type": "Explorer",
+      "budget": 800,
+      "patience": 60,
+      "preferredServices": ["fuel", "repair", "info"],
+      "description": "寻找未知星球的冒险者，喜欢分享故事"
+    },
+    {
+      "id": 3,
+      "name": "移民",
+      "type": "Immigrant",
+      "budget": 300,
+      "patience": 120,
+      "preferredServices": ["food", "rest"],
+      "description": "寻找新家园的家庭，预算有限但会推荐"
+    },
+    {
+      "id": 4,
+      "name": "贵族",
+      "type": "Noble",
+      "budget": 5000,
+      "patience": 20,
+      "preferredServices": ["vip", "luxury"],
+      "description": "富有的旅行者，要求高端服务"
+    },
+    {
+      "id": 5,
+      "name": "走私者",
+      "type": "Smuggler",
+      "budget": 2000,
+      "patience": 45,
+      "preferredServices": ["repair", "secret"],
+      "description": "灰色地带的交易者，高风险高回报"
+    },
+    {
+      "id": 6,
+      "name": "科学家",
+      "type": "Scientist",
+      "budget": 1500,
+      "patience": 90,
+      "preferredServices": ["research", "data"],
+      "description": "研究人员，需要特殊材料和数据"
+    }
+  ],
+  "facilityConfig": [
+    {
+      "id": 1,
+      "name": "燃料站",
+      "type": "FuelStation",
+      "unlockLevel": 1,
+      "buildCost": 1000,
+      "upgradeCost": [2000, 5000, 10000],
+      "maxLevel": 3,
+      "productionRate": 10,
+      "description": "为飞船提供燃料补给"
+    },
+    {
+      "id": 2,
+      "name": "停泊港",
+      "type": "Dock",
+      "unlockLevel": 1,
+      "buildCost": 2000,
+      "upgradeCost": [3000, 8000, 15000],
+      "maxLevel": 3,
+      "capacity": [3, 5, 8, 12],
+      "description": "供飞船停靠的港口"
+    },
+    {
+      "id": 3,
+      "name": "便利店",
+      "type": "Shop",
+      "unlockLevel": 3,
+      "buildCost": 1500,
+      "upgradeCost": [2500, 6000, 12000],
+      "maxLevel": 3,
+      "itemSlots": [5, 10, 15, 20],
+      "description": "售卖日常用品和旅行必需品"
+    },
+    {
+      "id": 4,
+      "name": "维修厂",
+      "type": "RepairShop",
+      "unlockLevel": 5,
+      "buildCost": 3000,
+      "upgradeCost": [5000, 10000, 20000],
+      "maxLevel": 3,
+      "repairSpeed": [1, 2, 3, 4],
+      "description": "提供飞船维修服务"
+    }
+  ]
+}
