@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace StellarHaven.Core
 {
@@ -158,11 +159,32 @@ namespace StellarHaven.Core
         /// <param name="sceneName">场景名称</param>
         public void LoadScene(string sceneName)
         {
+            TryLoadScene(sceneName);
+        }
+
+        /// <summary>
+        /// 安全加载场景，失败时返回 false
+        /// </summary>
+        public bool TryLoadScene(string sceneName)
+        {
+            if (string.IsNullOrWhiteSpace(sceneName))
+            {
+                Debug.LogError("场景名称为空，无法加载。");
+                return false;
+            }
+
+            if (!Application.CanStreamedLevelBeLoaded(sceneName))
+            {
+                Debug.LogError($"场景不可加载（未加入 Build Settings 或不存在）：{sceneName}");
+                return false;
+            }
+
             Debug.Log($"加载场景：{sceneName}");
             CurrentScene = sceneName;
-            
+
             // TODO: 使用 SceneManager.LoadSceneAsync 异步加载
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+            SceneManager.LoadScene(sceneName);
+            return true;
         }
         
         /// <summary>
@@ -170,6 +192,12 @@ namespace StellarHaven.Core
         /// </summary>
         public void ReloadScene()
         {
+            if (string.IsNullOrWhiteSpace(CurrentScene))
+            {
+                Debug.LogError("当前场景为空，无法重载。");
+                return;
+            }
+
             LoadScene(CurrentScene);
         }
         

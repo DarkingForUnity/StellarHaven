@@ -48,6 +48,11 @@ namespace StellarHaven.Core
         /// 异步加载任务
         /// </summary>
         private Dictionary<string, ResourceRequest> _asyncLoadTasks = new Dictionary<string, ResourceRequest>();
+
+        /// <summary>
+        /// 异步加载回调队列（同一路径合并）
+        /// </summary>
+        private Dictionary<string, List<System.Action<Object>>> _asyncCallbacks = new Dictionary<string, List<System.Action<Object>>>();
         
         #endregion
         
@@ -154,6 +159,18 @@ namespace StellarHaven.Core
         /// <param name="onComplete">加载完成回调</param>
         public void LoadResourceAsync<T>(string path, System.Action<T> onComplete) where T : Object
         {
+            System.Action<Object> callback = (asset) =>
+            {
+                if (asset is T typedAsset)
+                {
+                    onComplete?.Invoke(typedAsset);
+                }
+                else
+                {
+                    onComplete?.Invoke(null);
+                }
+            };
+
             // 检查缓存
             if (_resourceCache.TryGetValue(path, out Object cached))
             {
@@ -168,22 +185,30 @@ namespace StellarHaven.Core
             // 检查是否已在加载
             if (_asyncLoadTasks.ContainsKey(path))
             {
-                Debug.LogWarning($"⚠️ 资源已在加载中：{path}");
+                if (!_asyncCallbacks.ContainsKey(path))
+                {
+                    _asyncCallbacks[path] = new List<System.Action<Object>>();
+                }
+
+                _asyncCallbacks[path].Add(callback);
+                Debug.Log($"⏳ 资源已在加载，回调已合并：{path}");
                 return;
             }
+
+            _asyncCallbacks[path] = new List<System.Action<Object>> { callback };
             
             // 开始异步加载
-            StartCoroutine(LoadResourceAsyncCoroutine<T>(path, onComplete));
+            StartCoroutine(LoadResourceAsyncCoroutine(path));
         }
         
         /// <summary>
         /// 异步加载协程
         /// </summary>
-        private IEnumerator LoadResourceAsyncCoroutine<T>(string path, System.Action<T> onComplete) where T : Object
+        private IEnumerator LoadResourceAsyncCoroutine(string path)
         {
             Debug.Log($"🔄 开始异步加载：{path}");
             
-            ResourceRequest request = Resources.LoadAsync<T>(path);
+            ResourceRequest request = Resources.LoadAsync<Object>(path);
             _asyncLoadTasks[path] = request;
             
             // 等待加载完成
@@ -198,12 +223,21 @@ namespace StellarHaven.Core
                 _resourceCache[path] = request.asset;
                 
                 Debug.Log($"✅ 异步加载完成：{path}");
-                onComplete?.Invoke(request.asset as T);
             }
             else
             {
                 Debug.LogError($"❌ 异步加载失败：{path}");
-                onComplete?.Invoke(null);
+            }
+
+            if (_asyncCallbacks.TryGetValue(path, out List<System.Action<Object>> callbacks))
+            {
+                Object asset = request.asset;
+                foreach (System.Action<Object> callback in callbacks)
+                {
+                    callback?.Invoke(asset);
+                }
+
+                _asyncCallbacks.Remove(path);
             }
         }
         
@@ -259,6 +293,7 @@ namespace StellarHaven.Core
         {
             _resourceCache.Clear();
             _asyncLoadTasks.Clear();
+            _asyncCallbacks.Clear();
             Resources.UnloadUnusedAssets();
             Debug.Log("🗑️ 已清空所有资源缓存");
         }
@@ -321,6 +356,7 @@ namespace StellarHaven.Core
             Debug.Log("===== 资源缓存状态 =====");
             Debug.Log($"缓存数量：{_resourceCache.Count}");
             Debug.Log($"异步任务：{_asyncLoadTasks.Count}");
+            Debug.Log($"回调队列：{_asyncCallbacks.Count}");
             
             foreach (var kvp in _resourceCache)
             {

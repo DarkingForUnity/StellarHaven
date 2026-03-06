@@ -21,7 +21,7 @@
 
 | 项目 | 版本/工具 |
 |------|-----------|
-| 游戏引擎 | Unity 2022.3.15f1 LTS |
+| 游戏引擎 | Unity 2022.3.62f3c1 LTS |
 | 开发语言 | C# |
 | 版本控制 | Git + GitHub |
 | AI 辅助 | ChatGPT Codex |
@@ -57,7 +57,7 @@ StellarHaven/
 ### 环境要求
 
 - Unity Hub 最新版
-- Unity 2022.3.15f1 LTS
+- Unity 2022.3.62f3c1 LTS
 - Git
 
 ### 安装步骤
@@ -73,10 +73,13 @@ cd StellarHaven
    - 选择项目文件夹
    - 选择 Unity 2022.3.15f1
 
-3. **打开场景**
+3. **初始化场景（首次）**
+   - 在 Unity 顶部菜单执行 `StellarHaven/Setup/Create Bootstrap & Main Scenes`
+
+4. **打开场景**
    - 打开 `Assets/_Scenes/Bootstrap.unity`
 
-4. **运行游戏**
+5. **运行游戏**
    - 点击 Play 按钮
 
 ---
@@ -89,7 +92,7 @@ cd StellarHaven
 - [x] GitHub 仓库创建
 - [x] Unity 项目初始化
 - [x] GameManager 基础框架
-- [ ] ResourceManager
+- [x] ResourceManager
 - [ ] 第一次原型测试
 
 ### 阶段二：核心期 (第 3-8 周) ⚪ 待开始
